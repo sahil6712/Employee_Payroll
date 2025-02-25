@@ -12,32 +12,32 @@ import com.example.employeepayroll.model.EmployeePayrollData;
 @Service
 public class EmployeePayrollService implements IEmployeePayrollService {
 
+    private List<EmployeePayrollData> employeePayrollList = new ArrayList<>();
     public List<EmployeePayrollData> getEmployeePayrollData() {
-        List<EmployeePayrollData> empDataList = new ArrayList<>();
-        empDataList.add(new EmployeePayrollData(1, new EmployeePayrollDTO("Pankaj", 30000)));
-        return empDataList;
+        return employeePayrollList;
     }
 
     public EmployeePayrollData getEmployeePayrollDataById(int empId) {
-        EmployeePayrollData empData = null;
-        empData = new EmployeePayrollData(1, new EmployeePayrollDTO("Pankaj", 30000));
-        return empData;
+        return employeePayrollList.get(empId-1);
     }
 
     public EmployeePayrollData createEmployeePayrollData(EmployeePayrollDTO empPayrollDTO) {
         EmployeePayrollData empData = null;
         empData = new EmployeePayrollData(1, empPayrollDTO);
+        employeePayrollList.add(empData);
         return empData;
     }
 
-    public EmployeePayrollData updateEmployeePayrollData(EmployeePayrollDTO empPayrollDTO) {
+
+    public EmployeePayrollData updateEmployeePayrollData(int empId, EmployeePayrollDTO empPayrollDTO) {
         EmployeePayrollData empData = null;
-        empData = new EmployeePayrollData(1, empPayrollDTO);
+        empData = this.getEmployeePayrollDataById(empId);
+        employeePayrollList.set(empId-1,empData);
         return empData;
     }
 
 
     public void deleteEmployeePayrolldata(int empId){
-        System.out.println("sds");
+        employeePayrollList.remove(empId-1);
     }
 }

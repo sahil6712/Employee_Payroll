@@ -43,7 +43,7 @@ public class EmployeePayrollController {
 
     @PutMapping("/update")
     public ResponseEntity<ResponseDTO> updateEmployeePayrollData(@RequestBody EmployeePayrollDTO employeePayrollDTO) {
-        EmployeePayrollData empData = employeePayrollService.updateEmployeePayrollData(employeePayrollDTO);
+        EmployeePayrollData empData = employeePayrollService.updateEmployeePayrollData(1, employeePayrollDTO);
         ResponseDTO responseDTO = new ResponseDTO("Update Success: ",empData);
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
