@@ -2,41 +2,48 @@ package com.example.employeepayroll.controller;
 
 import com.example.employeepayroll.dto.ResponseDTO;
 import com.example.employeepayroll.model.EmployeePayrollData;
+import com.example.employeepayroll.service.EmployeePayrollService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.employeepayroll.dto.EmployeePayrollDTO;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/employeeservice")
 public class EmployeePayrollController {
 
+    @Autowired
+    private EmployeePayrollService employeePayrollService;
+
     @RequestMapping(value = {"","/","/get"})
     public ResponseEntity<ResponseDTO> getEmployeePayrollData() {
-        EmployeePayrollData empData = null;
-        empData = new EmployeePayrollData("Sahil",9999999,212);
-        ResponseDTO responseDTO = new ResponseDTO("Get Call Success",empData);
+        List<EmployeePayrollData> empDataList = null;
+        empDataList = employeePayrollService.getEmployeePayrollData();
+        ResponseDTO responseDTO = new ResponseDTO("Get Call Success",empDataList);
         return new ResponseEntity<ResponseDTO>(responseDTO,HttpStatus.OK);
     }
 
     @GetMapping("/get/{empId}")
     public ResponseEntity<ResponseDTO> getEmployeePayrollData(@PathVariable("empId") int empId) {
         EmployeePayrollData empData = null;
-        empData = new EmployeePayrollData("Sahi",35552545,27);
+        empData = employeePayrollService.getEmployeePayrollDataById(empId);
         ResponseDTO responseDTO = new ResponseDTO("Get Call Success by id: ",empData);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @PostMapping("/create")
     public ResponseEntity<ResponseDTO> addEmployeePayrollData(@RequestBody EmployeePayrollDTO employeePayrollDTO) {
-        EmployeePayrollData empData = new EmployeePayrollData(employeePayrollDTO.name,employeePayrollDTO.salary,142);
+        EmployeePayrollData empData = employeePayrollService.createEmployeePayrollData(employeePayrollDTO);
         ResponseDTO responseDTO = new ResponseDTO("Create Employee Payroll Data for: ",empData);
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
     @PutMapping("/update")
     public ResponseEntity<ResponseDTO> updateEmployeePayrollData(@RequestBody EmployeePayrollDTO employeePayrollDTO) {
-        EmployeePayrollData empData = new EmployeePayrollData(employeePayrollDTO.name, employeePayrollDTO.salary, 213);
+        EmployeePayrollData empData = employeePayrollService.updateEmployeePayrollData(employeePayrollDTO);
         ResponseDTO responseDTO = new ResponseDTO("Update Success: ",empData);
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
